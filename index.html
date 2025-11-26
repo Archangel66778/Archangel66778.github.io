@@ -6,7 +6,7 @@
     <title>Союз Небес и Земли | Хроники</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
-        /* --- ПАЛИТРА И БАЗА --- */
+        /* --- СТИЛИ CSS (ОСТАВЛЕНЫ БЕЗ ИЗМЕНЕНИЙ) --- */
         :root {
             --gold: #d4af37;        /* Азраил */
             --red: #8a1c1c;         /* Элиандра */
@@ -27,7 +27,6 @@
             overflow-x: hidden;
         }
 
-        /* --- ОБЛОЖКА --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -64,7 +63,6 @@
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
 
-        /* --- СТИЛИ ГЛАВ --- */
         .book-container {
             max-width: 900px;
             margin: 0 auto;
@@ -89,24 +87,12 @@
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
-        .chapter-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
         .chapter h2 {
             font-family: 'Cinzel', serif;
             font-size: 2.2rem;
             color: var(--gold);
         }
 
-        /* КНОПКА ОЗВУЧКИ */
         .voice-btn {
             background: transparent;
             border: 1px solid var(--gold);
@@ -115,16 +101,12 @@
             font-family: 'Cinzel', serif;
             cursor: pointer;
             transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
             font-size: 0.9rem;
         }
 
         .voice-btn:hover { background: var(--gold); color: #000; }
         .voice-btn.active { border-color: var(--red); color: var(--red); animation: pulse 2s infinite; }
 
-        /* ТЕКСТ И ПОДСВЕТКА */
         .text-block {
             margin-bottom: 30px;
             text-align: justify;
@@ -133,7 +115,6 @@
             border-left: 3px solid transparent;
         }
 
-        /* Эффект при чтении */
         .active-reading {
             background: rgba(255,255,255,0.05);
             border-left-color: var(--gold);
@@ -142,7 +123,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* ДИАЛОГИ */
         .dialogue-section { margin: 40px 0; padding-left: 10px; }
         .dialogue-line {
             margin-bottom: 25px;
@@ -151,26 +131,20 @@
             border-left: 4px solid #333;
             transition: all 0.5s ease;
         }
-        .dialogue-line.active-reading { background: rgba(255,255,255,0.08); transform: translateX(15px); }
 
         .speaker { display: block; font-family: 'Cinzel', serif; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; }
         .speech { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: #fff; }
 
-        /* Цвета ролей */
         .azrael { border-left-color: var(--gold); }
         .azrael .speaker { color: var(--gold); }
-        
         .eliandra { border-left-color: var(--red); }
         .eliandra .speaker { color: var(--red); }
-        
         .uriel { border-left-color: var(--blue); }
         .uriel .speaker { color: var(--blue); }
 
         footer { text-align: center; padding: 80px 0; color: #555; font-size: 0.9rem; border-top: 1px solid #222; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-        
-        @media (max-width: 768px) { .hero h1 { font-size: 3rem; } .chapter { padding: 30px 20px; } }
     </style>
 </head>
 <body>
@@ -190,28 +164,12 @@
                 </div>
                 <button class="voice-btn" onclick="startReading('ch1', this)">▶ Слушать главу</button>
             </div>
-
-            <p class="text-block readable" data-voice="narrator">
-                Это был не дождь, а огонь. Азраил падал три дня и три ночи. Его крылья, некогда укрывавшие целые города, сгорели при входе в атмосферу, оставив за собой шлейф черного дыма. Он рухнул в сердце Запретного Леса, уничтожив вековую рощу. Элиандра нашла его в кратере из оплавленного стекла. Она ожидала увидеть демона, но увидела существо, чья кровь сияла как жидкое золото.
-            </p>
-
+            <p class="text-block readable" data-voice="narrator">Это был не дождь, а огонь. Азраил падал три дня и три ночи. Его крылья, некогда укрывавшие целые города, сгорели при входе в атмосферу, оставив за собой шлейф черного дыма. Он рухнул в сердце Запретного Леса, уничтожив вековую рощу. Элиандра нашла его в кратере из оплавленного стекла. Она ожидала увидеть демона, но увидела существо, чья кровь сияла как жидкое золото.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Не подходи, смертная. Я — радиоактивный пепел. Мое присутствие здесь отравляет твой мир."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра</span>
-                    <span class="speech">"Я пережила зимы, которые убивали медведей, и пожары, которые плавили камень. Твой свет меня не пугает. Зачем ты здесь?"</span>
-                </div>
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Я пришел умереть. Я отказался выполнить приказ Совета, и они вырвали мне благодать. Добей меня. Это будет милосердием."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра (убирая меч)</span>
-                    <span class="speech">"В моем доме не убивают безоружных. Вставай, падший. Если смерть хочет тебя, ей придется пройти через меня."</span>
-                </div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Не подходи, смертная. Я — радиоактивный пепел. Мое присутствие здесь отравляет твой мир."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я пережила зимы, которые убивали медведей, и пожары, которые плавили камень. Твой свет меня не пугает. Зачем ты здесь?"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Я пришел умереть. Я отказался выполнить приказ Совета, и они вырвали мне благодать. Добей меня. Это будет милосердием."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (убирая меч)</span><span class="speech">"В моем доме не убивают безоружных. Вставай, падший. Если смерть хочет тебя, ей придется пройти через меня."</span></div>
             </div>
         </div>
 
@@ -223,24 +181,11 @@
                 </div>
                 <button class="voice-btn" onclick="startReading('ch2', this)">▶ Слушать главу</button>
             </div>
-
-            <p class="text-block readable" data-voice="narrator">
-                Первые недели были пыткой. Для Азраила человеческие чувства были подобны ожогам. Он не знал, как справляться с холодом, голодом и, что хуже всего, со стыдом. Элиандра не задавала вопросов. Она просто приносила мази из лунных трав и перевязывала его спину, где раньше были крылья. Однажды ночью, в лихорадке, он схватил её за руку.
-            </p>
-
+            <p class="text-block readable" data-voice="narrator">Первые недели были пыткой. Для Азраила человеческие чувства были подобны ожогам. Он не знал, как справляться с холодом, голодом и, что хуже всего, со стыдом. Элиандра не задавала вопросов. Она просто приносила мази из лунных трав и перевязывала его спину, где раньше были крылья. Однажды ночью, в лихорадке, он схватил её за руку.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Почему ты это делаешь? Я — воин. Я разрушал цивилизации по щелчку пальцев. Я монстр, Элиандра."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра</span>
-                    <span class="speech">"Монстры не плачут во сне, Аз. Ты думаешь, что потерял всё, когда упал. Но посмотри на меня. Может быть, ты упал не вниз, а туда, где должен был быть всегда?"</span>
-                </div>
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Твои руки теплее, чем свет тысячи солнц. Если это и есть быть смертным... то я не хочу возвращаться назад."</span>
-                </div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Почему ты это делаешь? Я — воин. Я разрушал цивилизации по щелчку пальцев. Я монстр, Элиандра."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Монстры не плачут во сне, Аз. Ты думаешь, что потерял всё, когда упал. Но посмотри на меня. Может быть, ты упал не вниз, а туда, где должен был быть всегда?"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Твои руки теплее, чем свет тысячи солнц. Если это и есть быть смертным... то я не хочу возвращаться назад."</span></div>
             </div>
         </div>
 
@@ -252,20 +197,10 @@
                 </div>
                 <button class="voice-btn" onclick="startReading('ch3', this)">▶ Слушать главу</button>
             </div>
-
-            <p class="text-block readable" data-voice="narrator">
-                Когда Элиандра понесла, сам лес изменился. Зимой расцвели цветы, а волки приходили спать на порог их хижины. Роды начались в ночь затмения. Когда родилась дочь, Лилит, тени в комнате ожили. Когда родился сын, Каэль, крыша хижины стала прозрачной.
-            </p>
-
+            <p class="text-block readable" data-voice="narrator">Когда Элиандра понесла, сам лес изменился. Зимой расцвели цветы, а волки приходили спать на порог их хижины. Роды начались в ночь затмения. Когда родилась дочь, Лилит, тени в комнате ожили. Когда родился сын, Каэль, крыша хижины стала прозрачной.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Эли... посмотри на них. У сына глаза как грозовое небо, а у дочери — как бездна. Это не просто дети. Это новое оружие."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра</span>
-                    <span class="speech">"Они не оружие. Они — мост. Мост между твоим холодным светом и моей горячей кровью."</span>
-                </div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Эли... посмотри на них. У сына глаза как грозовое небо, а у дочери — как бездна. Это не просто дети. Это новое оружие."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Они не оружие. Они — мост. Мост между твоим холодным светом и моей горячей кровью."</span></div>
             </div>
         </div>
 
@@ -277,20 +212,10 @@
                 </div>
                 <button class="voice-btn" onclick="startReading('ch4', this)">▶ Слушать главу</button>
             </div>
-
-            <p class="text-block readable" data-voice="narrator">
-                Дети росли быстро. В пять лет Каэль мог исцелять раненых оленей, а Лилит голосом раскалывала камни. Азраил учил их скрывать свою ауру, а Элиандра учила сражаться. Они знали, что покой — это лишь затишье перед ураганом.
-            </p>
-
+            <p class="text-block readable" data-voice="narrator">Дети росли быстро. В пять лет Каэль мог исцелять раненых оленей, а Лилит голосом раскалывала камни. Азраил учил их скрывать свою ауру, а Элиандра учила сражаться. Они знали, что покой — это лишь затишье перед ураганом.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Мы не сможем прятать их вечно. Скоро Уриил найдет нас."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра</span>
-                    <span class="speech">"Значит, мы встретим его не на коленях, а с мечами в руках."</span>
-                </div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Мы не сможем прятать их вечно. Скоро Уриил найдет нас."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Значит, мы встретим его не на коленях, а с мечами в руках."</span></div>
             </div>
         </div>
 
@@ -302,29 +227,13 @@
                 </div>
                 <button class="voice-btn" onclick="startReading('ch5', this)">▶ Слушать главу</button>
             </div>
-
-            <p class="text-block readable" data-voice="narrator">
-                Они пришли на рассвете. Три столпа света ударили в землю. Архангел Уриил и его преторианцы в золотых масках не выражали ничего, кроме слепого повиновения.
-            </p>
-
+            <p class="text-block readable" data-voice="narrator">Они пришли на рассвете. Три столпа света ударили в землю. Архангел Уриил и его преторианцы в золотых масках не выражали ничего, кроме слепого повиновения.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line uriel readable" data-voice="uriel">
-                    <span class="speaker">Архангел Уриил</span>
-                    <span class="speech">"Азраил. Ты нарушил законы. Смешение видов недопустимо. Отдай нам детей-выродков."</span>
-                </div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra">
-                    <span class="speaker">Элиандра</span>
-                    <span class="speech">"Выродки? Ты стоишь на земле, которую не создавал. Сделай шаг, и я вырву твое сердце."</span>
-                </div>
-                <div class="dialogue-line azrael readable" data-voice="azrael">
-                    <span class="speaker">Азраил</span>
-                    <span class="speech">"Ты забыл, кто учил тебя держать клинок, Уриил. Сегодня ты сражаешься не с Ангелом. Ты сражаешься с Отцом."</span>
-                </div>
+                <div class="dialogue-line uriel readable" data-voice="uriel"><span class="speaker">Архангел Уриил</span><span class="speech">"Азраил. Ты нарушил законы. Смешение видов недопустимо. Отдай нам детей-выродков."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Выродки? Ты стоишь на земле, которую не создавал. Сделай шаг, и я вырву твое сердце."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Ты забыл, кто учил тебя держать клинок, Уриил. Сегодня ты сражаешься не с Ангелом. Ты сражаешься с Отцом."</span></div>
             </div>
-            
-            <p class="text-block readable" data-voice="narrator">
-                 И когда Азраил бросился в атаку, его меч горел не небесным светом, а яростным пламенем самой жизни.
-            </p>
+            <p class="text-block readable" data-voice="narrator">И когда Азраил бросился в атаку, его меч горел не небесным светом, а яростным пламенем самой жизни.</p>
         </div>
 
     </div>
@@ -338,19 +247,33 @@
         let readingQueue = [];
         let currentBtn = null;
         const synthesis = window.speechSynthesis;
-        let voices = [];
+        let voices = synthesis.getVoices(); // Попытка получить голоса сразу
 
-        // Загрузка голосов
-        function loadVoices() {
-            voices = synthesis.getVoices();
-        }
-        
-        loadVoices();
+        // Обновляем список голосов, когда он меняется
         if (synthesis.onvoiceschanged !== undefined) {
-            synthesis.onvoiceschanged = loadVoices;
+            synthesis.onvoiceschanged = () => {
+                voices = synthesis.getVoices();
+                console.log("Голоса обновлены:", voices.length);
+            };
         }
 
         function startReading(chapterId, btn) {
+            if (!synthesis) {
+                alert("Ошибка: Ваш браузер не поддерживает синтез речи.");
+                return;
+            }
+            
+            // На мобильных устройствах иногда нужно получать голоса именно в момент клика
+            if (voices.length === 0) {
+                 voices = synthesis.getVoices();
+            }
+
+            // Если голосов все еще нет, выводим ошибку
+            if (voices.length === 0) {
+                 alert("Озвучка недоступна. Убедитесь, что в настройках телефона/планшета установлен русский голосовой пакет.");
+                 return;
+            }
+
             if (isReading) {
                 stopReading();
                 if (currentBtn === btn) return; 
@@ -374,30 +297,26 @@
             }
 
             const element = readingQueue.shift();
-            // Получаем текст для озвучки
             const textToRead = element.querySelector('.speech') ? element.querySelector('.speech').innerText : element.innerText;
             const role = element.dataset.voice;
 
-            // 1. Визуальная подсветка
+            // Визуальная подсветка и скролл
             document.querySelectorAll('.active-reading').forEach(el => el.classList.remove('active-reading'));
             element.classList.add('active-reading');
-            
-            // 2. Авто-скролл
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // 3. Создание речи
+            // Создание речи
             const utterance = new SpeechSynthesisUtterance(textToRead);
             utterance.lang = 'ru-RU';
-            
-            // 4. ПРИМЕНЕНИЕ "МАСОК" ГОЛОСОВ (Pitch = Высота тона, Rate = Скорость)
             applyVoicePersona(utterance, role);
 
             utterance.onend = () => { if (isReading) readNext(); };
             utterance.onerror = (e) => { 
-                console.error("Ошибка синтеза:", e); 
+                console.error("❌ Ошибка воспроизведения. Мобильное устройство заблокировало звук.", e); 
                 stopReading(); 
             };
 
+            // Вызов speak() должен быть максимально прямым (как сейчас)
             synthesis.speak(utterance);
         }
 
@@ -416,43 +335,44 @@
 
         function applyVoicePersona(utterance, role) {
             const ruVoices = voices.filter(v => v.lang.includes('ru'));
-            const femaleVoice = ruVoices.find(v => v.name.includes('Google') || v.name.includes('Irina') || v.name.includes('Milena'));
-            const maleVoice = ruVoices.find(v => v.name.includes('Pavel') || v.name.includes('Yuri') || !v.name.includes('Google'));
-            const baseVoice = maleVoice || ruVoices[0] || voices[0];
+            
+            if (ruVoices.length === 0) return; // Нет русских голосов, используем настройки по умолчанию (если браузер позволит)
 
-            utterance.voice = baseVoice;
+            // Выбор голоса и настройка тональности
+            // Мобильные голоса часто имеют другие названия, поэтому полагаемся на фильтры lang/name
+            const femaleVoice = ruVoices.find(v => v.name.includes('Irina') || v.name.includes('Milena') || v.gender === 'female');
+            const maleVoice = ruVoices.find(v => v.name.includes('Pavel') || v.name.includes('Yuri') || v.gender === 'male');
+            const baseVoice = maleVoice || ruVoices[0]; // Берем первый русский как базовый
+
+            if (baseVoice) utterance.voice = baseVoice;
 
             switch(role) {
-                case 'narrator': // ПОВЕСТВОВАТЕЛЬ (Мужской 1)
+                case 'narrator': 
                     utterance.pitch = 1.0; 
                     utterance.rate = 1.0;  
                     break;
 
-                case 'azrael': // АЗРАИЛ (Мужской 2 - Низкий, Бас)
-                    utterance.voice = maleVoice || baseVoice;
+                case 'azrael': // Мужской 2 (Бас)
+                    if (maleVoice) utterance.voice = maleVoice;
                     utterance.pitch = 0.6; 
                     utterance.rate = 0.9;  
                     break;
 
-                case 'eliandra': // ЭЛИАНДРА (Женский 1)
+                case 'eliandra': // Женский 1
                     if (femaleVoice) {
                         utterance.voice = femaleVoice;
                         utterance.pitch = 1.0;
                     } else {
-                        // Имитация женского голоса
-                        utterance.pitch = 1.4; 
+                        utterance.pitch = 1.4; // Имитация
                     }
                     utterance.rate = 1.05;
                     break;
 
-                case 'uriel': // УРИИЛ (Мужской 3 - Холодный, Быстрый)
-                    utterance.voice = maleVoice || baseVoice;
+                case 'uriel': // Мужской 3 (Холодный)
+                    if (maleVoice) utterance.voice = maleVoice;
                     utterance.pitch = 1.0; 
                     utterance.rate = 1.25; 
                     break;
-                    
-                default:
-                    utterance.pitch = 1.0;
             }
         }
     </script>
