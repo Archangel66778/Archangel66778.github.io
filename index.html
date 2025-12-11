@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Союз Небес и Земли | Хроники</title>
+    <title>Союз Небес и Земли | Проклятие Смертных</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
     <style>
-        /* --- СТИЛИ CSS (ОСТАВЛЕНЫ БЕЗ ИЗМЕНЕНИЙ) --- */
+        /* --- СТИЛИ --- */
         :root {
             --gold: #d4af37;        /* Азраил */
             --red: #8a1c1c;         /* Элиандра */
-            --blue: #aaddff;        /* Уриил */
+            --blue: #aaddff;        /* Уриил, Разиил */
+            --void: #b388eb;        /* Дети (Каэль/Лилит/Новые) */
+            --michael: #ff4500;     /* Михаил (Огненный) */
+            --maria: #50c878;       /* Мария (Изумрудный/Жизнь) */
+            --warlord: #b8860b;     /* Варрус (Бронза) */
+            --demon: #9400d3;       /* Малакар (Пурпур) */
+            
             --dark-bg: #050505;
             --card-bg: rgba(20, 22, 26, 0.95);
             --text-color: #d1d1d1;
         }
 
+        /* Общие стили для фона, шрифтов и расположения */
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -44,7 +51,7 @@
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(3rem, 6vw, 6rem);
+            font-size: clamp(2.5rem, 5vw, 5rem);
             color: #fff;
             text-shadow: 0 0 40px #000;
             margin-bottom: 20px;
@@ -53,27 +60,22 @@
         }
 
         .hero p {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             color: var(--gold);
             letter-spacing: 3px;
             text-transform: uppercase;
             background: rgba(0,0,0,0.8);
-            padding: 15px 35px;
+            padding: 10px 20px;
             border-radius: 4px;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
 
-        .book-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 80px 20px;
-        }
+        .book-container { max-width: 900px; margin: 0 auto; padding: 80px 20px; }
 
         .chapter {
             background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.05);
             padding: 60px 40px;
-            margin-bottom: 150px;
+            margin-bottom: 100px;
             border-radius: 5px;
             box-shadow: 0 0 80px rgba(0,0,0,0.5);
             position: relative;
@@ -87,159 +89,489 @@
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
         }
 
-        .chapter h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            color: var(--gold);
+        .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
+        .chapter h2 { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); }
+        .subtitle { font-size: 0.9rem; color: #777; font-style: italic; }
+
+        /* Стили для кнопки озвучки */
         .voice-btn {
             background: transparent;
             border: 1px solid var(--gold);
             color: var(--gold);
-            padding: 10px 20px;
+            padding: 8px 15px;
             font-family: 'Cinzel', serif;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
-
         .voice-btn:hover { background: var(--gold); color: #000; }
         .voice-btn.active { border-color: var(--red); color: var(--red); animation: pulse 2s infinite; }
 
-        .text-block {
-            margin-bottom: 30px;
-            text-align: justify;
-            transition: all 0.5s ease;
-            padding: 15px;
-            border-left: 3px solid transparent;
-        }
+        /* Стили для текста и диалогов */
+        .text-block { margin-bottom: 30px; text-align: justify; padding: 10px; border-left: 3px solid transparent; transition: 0.3s; }
+        .active-reading { background: rgba(255,255,255,0.05); border-left-color: var(--gold); color: #fff; transform: scale(1.01); }
 
-        .active-reading {
-            background: rgba(255,255,255,0.05);
-            border-left-color: var(--gold);
-            color: #fff;
-            transform: scale(1.02);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .dialogue-section { margin: 30px 0; padding-left: 10px; }
+        .dialogue-line { margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-left: 4px solid #333; transition: 0.3s; }
+        .dialogue-line.active-reading { background: rgba(255,255,255,0.08); transform: translateX(10px); }
 
-        .dialogue-section { margin: 40px 0; padding-left: 10px; }
-        .dialogue-line {
-            margin-bottom: 25px;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-left: 4px solid #333;
-            transition: all 0.5s ease;
-        }
-
-        .speaker { display: block; font-family: 'Cinzel', serif; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 8px; opacity: 0.8; }
-        .speech { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.3rem; color: #fff; }
-
-        .azrael { border-left-color: var(--gold); }
-        .azrael .speaker { color: var(--gold); }
-        .eliandra { border-left-color: var(--red); }
-        .eliandra .speaker { color: var(--red); }
-        .uriel { border-left-color: var(--blue); }
-        .uriel .speaker { color: var(--blue); }
+        .speaker { display: block; font-family: 'Cinzel', serif; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; opacity: 0.8; }
+        .speech { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: #fff; }
+        
+        /* Цветовая кодировка ролей */
+        .azrael { border-left-color: var(--gold); } .azrael .speaker { color: var(--gold); }
+        .eliandra { border-left-color: var(--red); } .eliandra .speaker { color: var(--red); }
+        .uriel, .razeel { border-left-color: var(--blue); } .uriel .speaker, .razeel .speaker { color: var(--blue); }
+        .litkael { border-left-color: var(--void); } .litkael .speaker { color: var(--void); }
+        .michael { border-left-color: var(--michael); } .michael .speaker { color: var(--michael); }
+        .maria { border-left-color: var(--maria); } .maria .speaker { color: var(--maria); }
+        .warlord { border-left-color: var(--warlord); } .warlord .speaker { color: var(--warlord); }
+        .demon { border-left-color: var(--demon); } .demon .speaker { color: var(--demon); }
 
         footer { text-align: center; padding: 80px 0; color: #555; font-size: 0.9rem; border-top: 1px solid #222; }
-
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+        @media (max-width: 768px) { .hero h1 { font-size: 3rem; } .chapter { padding: 30px 20px; } }
     </style>
 </head>
 <body>
 
     <section class="hero">
         <h1>Союз Небес и Земли</h1>
-        <p>Нарушенная клятва. Вечная любовь.</p>
+        <p>Проклятие Смертных. Новая Война.</p>
     </section>
 
     <div class="book-container">
 
         <div class="chapter" id="ch1">
-            <div class="chapter-header">
-                <div>
-                    <h2>Глава I: Падение</h2>
-                    <div style="color: #777; font-style: italic;">Момент, когда небеса коснулись земли</div>
-                </div>
-                <button class="voice-btn" onclick="startReading('ch1', this)">▶ Слушать главу</button>
-            </div>
-            <p class="text-block readable" data-voice="narrator">Это был не дождь, а огонь. Азраил падал три дня и три ночи. Его крылья, некогда укрывавшие целые города, сгорели при входе в атмосферу, оставив за собой шлейф черного дыма. Он рухнул в сердце Запретного Леса, уничтожив вековую рощу. Элиандра нашла его в кратере из оплавленного стекла. Она ожидала увидеть демона, но увидела существо, чья кровь сияла как жидкое золото.</p>
+            <div class="chapter-header"><div><h2>Глава I: Падение</h2></div><button class="voice-btn" onclick="startReading('ch1', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Это был не дождь, а огонь. Азраил падал три дня и три ночи. Его крылья сгорели. Элиандра нашла его в кратере из оплавленного стекла. Она, травница и целительница, подошла к нему, не испытывая страха, только жалость.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Не подходи, смертная. Я — радиоактивный пепел. Мое присутствие здесь отравляет твой мир."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я пережила зимы, которые убивали медведей, и пожары, которые плавили камень. Твой свет меня не пугает. Зачем ты здесь?"</span></div>
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Я пришел умереть. Я отказался выполнить приказ Совета, и они вырвали мне благодать. Добей меня. Это будет милосердием."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (убирая меч)</span><span class="speech">"В моем доме не убивают безоружных. Вставай, падший. Если смерть хочет тебя, ей придется пройти через меня."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (еле слышно)</span><span class="speech">"Уходи. Я несу проклятие..."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Проклятие — это боль, и я вижу ее. Здесь, на Земле, мы лечим раны, а не судим души. Кто бы ты ни был, я тебя спасу."</span></div>
             </div>
         </div>
 
         <div class="chapter" id="ch2">
-            <div class="chapter-header">
-                <div>
-                    <h2>Глава II: Исцеление Души</h2>
-                    <div style="color: #777; font-style: italic;">Как холодный эфир стал теплым пламенем</div>
-                </div>
-                <button class="voice-btn" onclick="startReading('ch2', this)">▶ Слушать главу</button>
-            </div>
-            <p class="text-block readable" data-voice="narrator">Первые недели были пыткой. Для Азраила человеческие чувства были подобны ожогам. Он не знал, как справляться с холодом, голодом и, что хуже всего, со стыдом. Элиандра не задавала вопросов. Она просто приносила мази из лунных трав и перевязывала его спину, где раньше были крылья. Однажды ночью, в лихорадке, он схватил её за руку.</p>
+            <div class="chapter-header"><div><h2>Глава II: Исцеление</h2></div><button class="voice-btn" onclick="startReading('ch2', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Первые недели были пыткой. Элиандра ухаживала за ним, используя земные травы и свою внутреннюю силу. Постепенно они полюбили друг друга, и Азраил перестал желать вернуться на Небеса.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Почему ты это делаешь? Я — воин. Я разрушал цивилизации по щелчку пальцев. Я монстр, Элиандра."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Монстры не плачут во сне, Аз. Ты думаешь, что потерял всё, когда упал. Но посмотри на меня. Может быть, ты упал не вниз, а туда, где должен был быть всегда?"</span></div>
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Твои руки теплее, чем свет тысячи солнц. Если это и есть быть смертным... то я не хочу возвращаться назад."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Что держит тебя там, наверху? Закон? Но ты выбрал меня."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Ничего. Ни благодать, ни долг. Я думал, что потерял всё, упав. Я ошибался. Я нашел жизнь. И я выбираю эту жизнь, Элиандра."</span></div>
             </div>
         </div>
 
         <div class="chapter" id="ch3">
-            <div class="chapter-header">
-                <div>
-                    <h2>Глава III: Рождение Нефилимов</h2>
-                    <div style="color: #777; font-style: italic;">Аномалия, изменившая мироздание</div>
-                </div>
-                <button class="voice-btn" onclick="startReading('ch3', this)">▶ Слушать главу</button>
-            </div>
-            <p class="text-block readable" data-voice="narrator">Когда Элиандра понесла, сам лес изменился. Зимой расцвели цветы, а волки приходили спать на порог их хижины. Роды начались в ночь затмения. Когда родилась дочь, Лилит, тени в комнате ожили. Когда родился сын, Каэль, крыша хижины стала прозрачной.</p>
+            <div class="chapter-header"><div><h2>Глава III: Рождение</h2></div><button class="voice-btn" onclick="startReading('ch3', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Родились Каэль и Лилит, Нефилимы. В них соединились свет отца и земная сила матери, идеальный, но запретный баланс. Азраил смотрел на детей с тревогой и гордостью.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Эли... посмотри на них. У сына глаза как грозовое небо, а у дочери — как бездна. Это не просто дети. Это новое оружие."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Они не оружие. Они — мост. Мост между твоим холодным светом и моей горячей кровью."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Они — чудо, Азраил. Но в них слишком много силы для этого мира. И для Небес."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Тогда мы научим их быть тайной. Я буду их щитом, пока моя последняя сила не иссякнет. А ты научишь их земле."</span></div>
             </div>
         </div>
 
         <div class="chapter" id="ch4">
-            <div class="chapter-header">
-                <div>
-                    <h2>Глава IV: Тени Сгущаются</h2>
-                    <div style="color: #777; font-style: italic;">Годы мира перед бурей</div>
-                </div>
-                <button class="voice-btn" onclick="startReading('ch4', this)">▶ Слушать главу</button>
-            </div>
-            <p class="text-block readable" data-voice="narrator">Дети росли быстро. В пять лет Каэль мог исцелять раненых оленей, а Лилит голосом раскалывала камни. Азраил учил их скрывать свою ауру, а Элиандра учила сражаться. Они знали, что покой — это лишь затишье перед ураганом.</p>
+            <div class="chapter-header"><div><h2>Глава IV: Тени</h2></div><button class="voice-btn" onclick="startReading('ch4', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Дети росли, обучаясь скрытности и бою. Семья знала, что покой — лишь затишье. Азраил предчувствовал вторжение Архангела Уриила, чья аура уже касалась границ их убежища.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Мы не сможем прятать их вечно. Скоро Уриил найдет нас."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Значит, мы встретим его не на коленях, а с мечами в руках."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Они идут. Не для того, чтобы вернуть меня, а чтобы уничтожить то, что я создал. Уриил всегда был цепным псом Совета."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Твои братья? Они готовы убить своих племянников? Из-за Закона?"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Из-за страха. Наша семья — идеальное равновесие. Это угрожает их мнимому порядку."</span></div>
             </div>
         </div>
 
         <div class="chapter" id="ch5">
-            <div class="chapter-header">
-                <div>
-                    <h2>Глава V: Судный День</h2>
-                    <div style="color: #777; font-style: italic;">Битва за семью</div>
-                </div>
-                <button class="voice-btn" onclick="startReading('ch5', this)">▶ Слушать главу</button>
-            </div>
-            <p class="text-block readable" data-voice="narrator">Они пришли на рассвете. Три столпа света ударили в землю. Архангел Уриил и его преторианцы в золотых масках не выражали ничего, кроме слепого повиновения.</p>
+            <div class="chapter-header"><div><h2>Глава V: Судный День</h2></div><button class="voice-btn" onclick="startReading('ch5', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">На рассвете пришли Уриил и его преторианцы. Они требовали выдачи Нефилимов. Уриил говорил голосом, лишенным тепла, как будто читал судебный приговор.</p>
             <div class="dialogue-section">
-                <div class="dialogue-line uriel readable" data-voice="uriel"><span class="speaker">Архангел Уриил</span><span class="speech">"Азраил. Ты нарушил законы. Смешение видов недопустимо. Отдай нам детей-выродков."</span></div>
-                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Выродки? Ты стоишь на земле, которую не создавал. Сделай шаг, и я вырву твое сердце."</span></div>
-                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Ты забыл, кто учил тебя держать клинок, Уриил. Сегодня ты сражаешься не с Ангелом. Ты сражаешься с Отцом."</span></div>
+                <div class="dialogue-line uriel readable" data-voice="uriel"><span class="speaker">Уриил</span><span class="speech">"Азраил. Совет требует, чтобы ты передал детей для очищения. Ты нарушил Закон. Не усугубляй своего падения."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Эти дети — не твоя юрисдикция, Уриил. Они — плоть от плоти моей. Я не предам свою кровь. Уходи, пока можешь."</span></div>
+                <div class="dialogue-line uriel readable" data-voice="uriel"><span class="speaker">Уриил</span><span class="speech">"Твой выбор ведет к войне. Ты уже мертв для Небес, Азраил. Скоро ты будешь мертв и для Земли."</span></div>
             </div>
-            <p class="text-block readable" data-voice="narrator">И когда Азраил бросился в атаку, его меч горел не небесным светом, а яростным пламенем самой жизни.</p>
+        </div>
+
+        <div class="chapter" id="ch6">
+            <div class="chapter-header"><div><h2>Глава VI: Вторжение</h2></div><button class="voice-btn" onclick="startReading('ch6', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Азраил, понимая, что его смертной силы недостаточно против легионов, отправился искать древнюю защиту, **Покров Предвестника**, чтобы скрыть семью. Он знал, что этот путь требует от него последних остатков благодати.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Я должен уйти. Моя последняя надежда — Покров. Он даст вам время, но цена будет высока. Спрячься, Элиандра, вместе с детьми."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я буду ждать. Вернись, или я найду тебя на любом краю мира."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль (юный)</span><span class="speech">"Отец, ты вернешься? Ты обещаешь?"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Я вернусь, сын. Я всегда буду с вами."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch7">
+            <div class="chapter-header"><div><h2>Глава VII: Двойственность</h2></div><button class="voice-btn" onclick="startReading('ch7', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Находясь вдали, дети обнаружили свою истинную силу: Каэль — свет, Лилит — тьма. Они учились контролировать свои противоположности, находя в них не конфликт, а гармонию.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Лилит</span><span class="speech">"Твоя сила, Каэль, обжигает меня. Она слишком яркая. Я могу укрыть нас в тени, но твой свет пробивается сквозь неё."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль</span><span class="speech">"Но когда мы держимся за руки, Лилит, тени становятся плотнее, а свет — теплее. Мы — одно целое, не два врага."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch8">
+            <div class="chapter-header"><div><h2>Глава VIII: Жертва</h2></div><button class="voice-btn" onclick="startReading('ch8', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Для активации Покрова Азраил навсегда отдал свою последнюю ангельскую благодать. Исчез последний отблеск света в его душе. Он стал полностью человеком, но его цель была достигнута — семья была защищена, пусть и временно.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (обращаясь к силе)</span><span class="speech">"Возьми всё. Я не нуждаюсь в вечности, если она разлучает меня с ними. Пусть эта цена послужит им щитом."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch9">
+            <div class="chapter-header"><div><h2>Глава IX: Раскол</h2></div><button class="voice-btn" onclick="startReading('ch9', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">На Небесах Архангел Разиил, беспощадный палач, собрал Легионы для полного уничтожения семьи Азраила, видя в Нефилимах угрозу чистоте своего мира. Он был одержим долгом.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line razeel readable" data-voice="razeel"><span class="speaker">Разиил</span><span class="speech">"Падший использовал запретное знание, чтобы создать мерзость. Эти Нефилимы — ошибка, которую необходимо стереть! Легионы, готовьтесь. Мы несем Очищение!"</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch10">
+            <div class="chapter-header"><div><h2>Глава X: Осада</h2></div><button class="voice-btn" onclick="startReading('ch10', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Семья вернулась в Запретный Лес, готовясь к решающему сражению против Легионов Разиила. Они знали, что Покров не вечен, и это их последний рубеж.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Армия слишком велика. Ты, Азраил, должен сосредоточиться на их лидере. Мы займемся остальными."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"У них есть численность, но у нас есть ярость Земли. Если мы умрем, мы умрем свободными, защищая свое."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Лилит</span><span class="speech">"Мы не умрем, папа. Мы — Нефилимы."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch11">
+            <div class="chapter-header"><div><h2>Глава XI: Барьер Разбит</h2></div><button class="voice-btn" onclick="startReading('ch11', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Копье Судьбы Разиила пробило Покров. Легионы хлынули в лес. Золотой свет и серебряные доспехи заполнили убежище. Азраил принял бой, защищая своих, зная, что это будет его последний смертный поединок.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line razeel readable" data-voice="razeel"><span class="speaker">Разиил (торжествующе)</span><span class="speech">"Покров пал! Здесь нет спасения, изгнанник! Вернись к пыли, из которой ты взял свою смертную пару!"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (доставая клинок)</span><span class="speech">"Я не прошу спасения. Я даю тебе последний шанс убраться с моей земли."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch12">
+            <div class="chapter-header"><div><h2>Глава XII: Танец Стали</h2></div><button class="voice-btn" onclick="startReading('ch12', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Азраил, хотя и смертный, сражался с невероятной силой, пропитанной чистой решимостью и любовью. Разиил был поражен его упорством, не понимая, как простой человек может противостоять Архангелу.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line razeel readable" data-voice="razeel"><span class="speaker">Разиил</span><span class="speech">"Ты слаб, брат! Твое тело смертно! Почему ты держишься? Зачем тратить вечность на этот прах?"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Это не прах. Это моя жизнь. И ты не отнимешь ее, пока я дышу!"</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch13">
+            <div class="chapter-header"><div><h2>Глава XIII: Единство Крови</h2></div><button class="voice-btn" onclick="startReading('ch13', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Дети и Элиандра сражались как единое целое, отбивая атаки ангелов. Элиандра командовала, используя хитрость и знание леса, а Нефилимы сочетали свет и тень, создавая разрушительный баланс.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Держите их в кольце! Не позволяйте им прорваться к Азраилу! Каэль, прикрой Лилит светом!"</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль</span><span class="speech">"Мы чувствуем друг друга, мама! Их Закон слаб против нашей силы!"</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch14">
+            <div class="chapter-header"><div><h2>Глава XIV: Падение Палача</h2></div><button class="voice-btn" onclick="startReading('ch14', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Азраил сломал оружие Разиила и поставил его на колени. Он не убил его, оставив жить, чтобы Архангел испытал позор поражения от того, кого он считал ничтожеством.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (над Разиилом)</span><span class="speech">"Вернись на Небеса. Расскажи Совету, что их Закон — это ложь. Мой суд не смерть. Мой суд — позор. Живи с тем, что ты проиграл человеку."</span></div>
+                <div class="dialogue-line razeel readable" data-voice="razeel"><span class="speaker">Разиил (униженно)</span><span class="speech">"Ты... ты заплатишь за это. Вечностью."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch15">
+            <div class="chapter-header"><div><h2>Глава XV: Триумф</h2></div><button class="voice-btn" onclick="startReading('ch15', this)">▶ Слушать</button></div>
+            <p class="text-block readable" data-voice="narrator">Небесный Легион бежал вслед за своим униженным лидером. Азраил и его семья одержали победу, но цена была высока. Лес был опустошен, а сам Азраил был ранен и истощен.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (подбегая к нему)</span><span class="speech">"Ты... Ты жив. Мы победили. Смотри, Азраил, мы свободны."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (обнимая её)</span><span class="speech">"Свобода — это ты. Пока ты со мной, я готов сражаться с целым Небом."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch16">
+            <div class="chapter-header">
+                <div><h2>Глава XVI: Раскат Небес</h2><div class="subtitle">Прибытие Высших Сил</div></div>
+                <button class="voice-btn" onclick="startReading('ch16', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Небо изогнулось, и явились родители Азраила: Архистратиг Михаил и Богиня Мария. Их появление было более устрашающим, чем битва. Азраил, только что победивший, почувствовал себя беззащитным смертным.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (громовым голосом)</span><span class="speech">"Азраил. Ты развязал войну на двух мирах. Ты посрамил Небо. Объясни свои действия."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (склоняя голову)</span><span class="speech">"Отец. Я готов ответить. Но сначала, позволь мне укрыть мою семью."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch17">
+            <div class="chapter-header">
+                <div><h2>Глава XVII: Архистратиг и Богиня</h2><div class="subtitle">Встреча с Создателями</div></div>
+                <button class="voice-btn" onclick="startReading('ch17', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Михаил потребовал объяснений. Мария с грустью увидела шрамы на спине сына, следы от оторванных крыльев, которые Азраил получил по решению Совета, не зная, что это было ложью.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line maria readable" data-voice="maria"><span class="speaker">Мария (со слезами)</span><span class="speech">"Мой сын... Что они сделали с тобой? Эти шрамы... Отчего они, Азраил?"</span></div>
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил</span><span class="speech">"Сначала правда, Азраил. Я хочу услышать, что заставило тебя поднять меч против собственного брата и нарушить величайший из Законов."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch18">
+            <div class="chapter-header">
+                <div><h2>Глава XVIII: Гнев Третьего Ранга</h2><div class="subtitle">Нарушение Иерархии</div></div>
+                <button class="voice-btn" onclick="startReading('ch18', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Азраил рассказал правду о лжи Совета и предательстве Разиила, который использовал свое положение для уничтожения его семьи. Михаил пришел в ярость, а Мария оплакивала страдания сына.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Совет солгал. Они назвали мою любовь изменой. Разиил пришел не за Законом, а за властью, чтобы убить моих детей! Я не каюсь ни в чем, кроме того, что доверился им."</span></div>
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (вспыхивая)</span><span class="speech">"Ложь в Зале Совета! Этого не будет! Я сам разберусь с Разиилом, но твоя судьба, сын, решается здесь и сейчас."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch19">
+            <div class="chapter-header">
+                <div><h2>Глава XIX: Кровь от Крови</h2><div class="subtitle">Благословение Богини Плодородия</div></div>
+                <button class="voice-btn" onclick="startReading('ch19', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Мария благословила Нефилимов, увидев в них не ошибку, а идеальный баланс жизни. Михаил признал Элиандру, увидев в ней не просто смертную, а силу, защитившую его род.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line maria readable" data-voice="maria"><span class="speaker">Мария</span><span class="speech">"Они — Жизнь. Совершенное Единство. Благословляю вас, дети мои, на вашу великую, долгую судьбу."</span></div>
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (обращаясь к Элиандре)</span><span class="speech">"Ты защитила моего сына и мою кровь. Я признаю тебя. Проси, что хочешь."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я хочу только одного: чтобы мой муж и мои дети были в безопасности. Навсегда."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch20">
+            <div class="chapter-header">
+                <div><h2>Глава XX: Вечный Пакт</h2><div class="subtitle">Выбор Азраила и Восстановление Ангела</div></div>
+                <button class="voice-btn" onclick="startReading('ch20', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Михаил, убедившись в правоте сына и силе его любви, сделал предложение, которое должно было обеспечить их будущее, но и проверить его волю.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил</span><span class="speech">"Сын. Я могу восстановить твою благодать, исцелить твою спину, вернуть твои крылья. Ты вернешь силу, достойную моего наследника. Это — дар, чтобы защитить твой выбор. Но ты должен вернуться в Небесный город."</span></div>
+                <div class="dialogue-line maria readable" data-voice="maria"><span class="speaker">Мария</span><span class="speech">"Верни себе Свет, Азраил. Он даст тебе вечность для любви."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (вставая)</span><span class="speech">"Отец. Я принимаю дар **силы и крыльев**, чтобы моя семья никогда больше не была уязвима. Восстанови меня полностью. Но я останусь здесь. Мой дом — Земля. Мой долг — здесь. Я стану **Крылатым Стражем** этой земли, буду **защищать свою любовь и своих детей этими силами**. Я не вернусь в Небесный город."</span></div>
+                <p class="text-block readable" data-voice="narrator">Свет Михаила окутал Азраила. Спина его раскрылась, сбросив шрамы, и вновь развернулись огромные, сияющие **крылья**, несущие в себе силу Небес. Он снова стал полноценным Ангелом, но с клятвой, привязывающей его к Земле. Михаил и Мария склонили головы перед его выбором.</p>
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил</span><span class="speech">"Да будет так. Ты избрал великое бремя. Но Небесный Закон невмешательства остается в силе. Ты — сам себе Закон, и твоя Земля теперь твоя ответственность."</span></div>
+                <p class="text-block readable" data-voice="narrator">Архистратиг вонзил свой меч в скалу, создав Щит Высших. Михаил и Мария ушли, оставив Азраила — могущественного Ангела с крыльями — на Земле, где он выбрал свою судьбу.</p>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch21">
+            <div class="chapter-header">
+                <div><h2>Глава XXI: Опасность с Земли</h2><div class="subtitle">Подготовка к новой войне</div></div>
+                <button class="voice-btn" onclick="startReading('ch21', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Прошло десять лет. Азраил, обладающий возрожденной силой и крыльями, тщательно обучал Элиандру и детей. Щит Михаила безупречно отталкивал Небеса. Но слухи о «Саде Марии» привлекли иную угрозу — человеческую жадность. Азраил, теперь полноценный Ангел, понимал, что его сила может быть бесполезна против хитрости и иллюзий, направленных на его семью.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Твоя сила, Элиандра, в твоей связи с этой землей. Используй ее, чтобы создавать границы, которые смертные увидят, но не смогут понять. Мой свет ослепителен, но ты — их хитрость."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я стану их ловушкой. Я буду защищать свой дом так, как не сможет ни один ангел."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch22">
+            <div class="chapter-header">
+                <div><h2>Глава XXII: Владыка Варрус</h2><div class="subtitle">Жадность Короля и Совет Демона</div></div>
+                <button class="voice-btn" onclick="startReading('ch22', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">На границе леса Варрус, жестокий король, и его огромная армия, остановились, привлеченные жаждой бессмертия. С ним был Демон-генерал Малакар, который объяснил, что небесный щит не сдержит силы, рожденные в Хаосе и смертной душе.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line warlord readable" data-voice="warlord"><span class="speaker">Владыка Варрус</span><span class="speech">"Я не боюсь ваших мифов! Принесите мне золотоносное дерево и кровь падшего ангела! Моя армия насчитывает десять тысяч."</span></div>
+                <div class="dialogue-line demon readable" data-voice="demon"><span class="speaker">Малакар</span><span class="speech">"Его Закон не действует против нас, Варрус. Мы — то, что Он не хочет видеть, — хаос. Я проложу тебе дорогу."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch22a">
+            <div class="chapter-header">
+                <div><h2>Глава XXII-А: Ультиматум Света</h2><div class="subtitle">Внезапное Явление Легионов</div></div>
+                <button class="voice-btn" onclick="startReading('ch22a', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Слова Малакара о Хаосе не успели затихнуть, как Небесный Щит вспыхнул ослепительным серебряным светом. Небо над армией Варруса раскололось. Оттуда спустились **Легионы Света**, ведомые Михаилом и Марией. Они остановились, зависнув над войском. Теперь, когда их сын сам был могущественен, их вмешательство стало чистым предупреждением.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (голос, сотрясающий землю)</span><span class="speech">"Сын, мы не нарушаем своего слова. Но твое решение не означает нашего бездействия, когда равновесие нарушено. Мы не будем сражаться за тебя против смертного короля, Варрус."</span></div>
+                <div class="dialogue-line maria readable" data-voice="maria"><span class="speaker">Мария (обращаясь к Малакару)</span><span class="speech">"Демон. Это предупреждение. Если твоя скверна Хаоса коснется моего мира, мы очистим эту землю от тебя и от всех, кто позволит тебе действовать."</span></div>
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил</span><span class="speech">"Ты силен. Но ты сам себе Закон. Если ты проиграешь, мы не дадим погибнуть Земле, но твоего дома больше не будет. Сражайся."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch23">
+            <div class="chapter-header">
+                <div><h2>Глава XXIII: Взлом Барьера</h2><div class="subtitle">Демонический Проход</div></div>
+                <button class="voice-btn" onclick="startReading('ch23', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Малакар, уязвленный вмешательством Высших Сил, но связанный их предупреждением, не мог открыть большой портал, но использовал темную магию, чтобы просочиться. Азраил понял, что его возрожденная сила может не сработать против иллюзий и обмана. Ему пришлось полагаться на магию Элиандры.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (встревоженно)</span><span class="speech">"У нас нет выбора. Элиандра, теперь твой выход. Задействуй Печати. Победим мы, или Небеса уничтожат все, что нам дорого."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Я готова. Я покажу им, что лес не пропустит их."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch24">
+            <div class="chapter-header">
+                <div><h2>Глава XXIV: Первая Кровь</h2><div class="subtitle">Обманчивые Границы Элиандры</div></div>
+                <button class="voice-btn" onclick="startReading('ch24', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Первая волна — человеческая армия Варруса. Они столкнулись не с клинком, а с обманом. Элиандра, стоя в центре, начала использовать **Печать Падшего Света**. Вокруг них появились мимолетные, мерцающие барьеры и двойные тропы. Солдаты, ослепленные жадностью, шли в никуда, терялись в собственных рядах, натыкались на деревья, которые секунду назад были проходом.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (внутренний монолог)</span><span class="speech">"Они ищут сокровище, но найдут только иллюзию. Энергия Падшего Света связывает их разум."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Лилит</span><span class="speech">"Мама, их страх смешивается с магией! Они уничтожают себя сами."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch25">
+            <div class="chapter-header">
+                <div><h2>Глава XXV: Сдерживание</h2><div class="subtitle">Тактика Воина и Падшей Магии</div></div>
+                <button class="voice-btn" onclick="startReading('ch25', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Пока армия Варруса барахталась в магическом хаосе, созданном Элиандрой, Азраил, используя свою возрожденную скорость и силу, добивал тех, кто прорвался. Он мог сражаться с ними напрямую, но Элиандра обеспечила тактическое преимущество. Она направляла Азраила, указывая на слабые места в дезориентированных рядах.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (командуя)</span><span class="speech">"Аз, ударь в центре! Каэль, поддержи Печать светом, чтобы она не рассеялась!"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Твоя магия ошеломляет их, жена. Моя сила защитит тебя, пока ты защищаешь нас всех."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch26">
+            <div class="chapter-header">
+                <div><h2>Глава XXVI: Демоническая Мощь</h2><div class="subtitle">Битва Нефилимов</div></div>
+                <button class="voice-btn" onclick="startReading('ch26', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Малакар, уставший от людской некомпетентности, сам вступил в бой, выпустив инфернальных тварей. Азраил столкнулся с демоном, но обнаружил, что чистая сила Малакара способна временно погасить его возрожденную благодать, вынуждая его сражаться осторожно. Каэль и Лилит столкнулись с силой, противоположной их природе.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line demon readable" data-voice="demon"><span class="speaker">Малакар</span><span class="speech">"Твоя сила — лишь слабое отражение, падший! Я приму твою силу, пока ты сражаешься с моей тенью!"</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Лилит</span><span class="speech">"Твоя Бездна — это пустота! Моя тьма питает, а не разрушает!"</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch27">
+            <div class="chapter-header">
+                <div><h2>Глава XXVII: Союз Света и Тени</h2><div class="subtitle">Синтез Нефилимов</div></div>
+                <button class="voice-btn" onclick="startReading('ch27', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Когда Малакар почти одолел Лилит, Каэль бросился вперед, направив в неё весь свой свет. Лилит не сгорела. Она приняла свет, и их силы слились, создав **Сумеречную Волну** — абсолютное равновесие, которое демоны не могли вынести.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль и Лилит (в унисон)</span><span class="speech">"Мы — баланс. И мы не падём."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch28">
+            <div class="chapter-header">
+                <div><h2>Глава XXVIII: Последний Расчет</h2><div class="subtitle">Варрус и Азраил</div></div>
+                <button class="voice-btn" onclick="startReading('ch28', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Пока дети добивали демонов, Азраил, используя свою силу, быстро расправился с Варрусом, который прорвался к сердцу Сада. Охваченный жадностью, Владыка пошел в атаку, но Азраил победил его одним ударом, подтверждая свой ранг.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line warlord readable" data-voice="warlord"><span class="speaker">Владыка Варрус</span><span class="speech">"Ты ангел? Я буду бессмертным королем! Отдай мне свою тайну!"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (устало, но решительно)</span><span class="speech">"Моя тайна не в благодати, а в любви. Ты ничего не получишь."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch29">
+            <div class="chapter-header">
+                <div><h2>Глава XXIX: Цена Свободы</h2><div class="subtitle">Уход Малакара</div></div>
+                <button class="voice-btn" onclick="startReading('ch29', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Варрус пал, а Малакар, получив урон от детей и исчерпав силы, отступил. Семья выиграла свою первую войну, где сила Азраила и магия Элиандры дополняли друг друга. Однако Малакар оставил после себя нечто большее, чем просто поражение.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line demon readable" data-voice="demon"><span class="speaker">Малакар (сквозь портал)</span><span class="speech">"Ты силен, Страж. Но твоя сила не может остановить Хаос, который я оставил здесь. Ты не можешь контролировать Землю!"</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Они уйдут. Наша семья научилась сражаться не только с богами, но и с чудовищами, которых рождает этот мир."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch30">
+            <div class="chapter-header">
+                <div><h2>Глава XXX: Вечное Бдение</h2><div class="subtitle">Новая Клятва</div></div>
+                <button class="voice-btn" onclick="startReading('ch30', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Семья вернулась в свой дом. Азраил, несмотря на всю свою силу, почувствовал опустошение от битвы. Он понял, что Щит Михаила не защищает от внутренних угроз. Их новая клятва была не богам, а Земле и друг другу.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Мы свободны от Небес. Но чтобы быть свободными от этого мира, мы должны стать его лучшими стражами."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль и Лилит (в унисон)</span><span class="speech">"Мы готовы."</span></div>
+            </div>
+        </div>
+        
+        <div class="chapter" id="ch31">
+            <div class="chapter-header">
+                <div><h2>Глава XXXI: Разрыв Миров</h2><div class="subtitle">Цена победы над Малакаром</div></div>
+                <button class="voice-btn" onclick="startReading('ch31', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Уход Малакара был расчетливым разрушением. В том месте, где он исчез, образовался **Разлом Небытия** — неконтролируемая рана между измерениями. Через трещину хлынул не просто Демонический Легион, а сам Хаос, несущий разрушение всему живому, что благословила Мария.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (его крылья светятся от напряжения)</span><span class="speech">"Это не армия. Это гниль. Она пожирает саму ткань этого мира! Моя сила не может закрыть эту рану, она лишь питает ее!"</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Печать Падшего Света не действует на него. Хаос слишком слеп, чтобы его можно было обмануть."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch32">
+            <div class="chapter-header">
+                <div><h2>ГЛАВА XXXII: Зов Отчаяния</h2><div class="subtitle">Угроза всему миру</div></div>
+                <button class="voice-btn" onclick="startReading('ch32', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Разлом рос. Лес, защищаемый Марией, начал увядать. Смерть угрожала поглотить весь смертный мир. Азраил, несмотря на свои крылья и силу, был бессилен против угрозы, которая требовала вмешательства Небесного Закона. Он поднял глаза к Небу, осознавая, что этот Закон выше его силы.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль</span><span class="speech">"Если Разлом поглотит нас, то и весь мир погибнет. Это не наша война, это война за существование."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (крик)</span><span class="speech">"Отец! Сделай, что должно!"</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch33">
+            <div class="chapter-header">
+                <div><h2>ГЛАВА XXXIII: Легионы Света</h2><div class="subtitle">Небеса спускаются на Землю</div></div>
+                <button class="voice-btn" onclick="startReading('ch33', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Щит Михаила не был разрушен. Он был добровольно снят. Небо раскололось не огнем, а миллионом лучей. На Землю спустились Легионы Ангелов, ведомые Михаилом и Марией. Они пришли не спасать изгнанного сына, а защищать мир, который их сын полюбил.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (голос, который слышали все миры)</span><span class="speech">"Мы дали вам свободу, сын. Но мы никогда не оставим мир, который вы избрали своим домом. Мы нарушаем свой Закон ради Закона Высшего: ради Жизни!"</span></div>
+                <div class="dialogue-line maria readable" data-voice="maria"><span class="speaker">Мария (возлагая руку на плечо Азраила)</span><span class="speech">"Теперь ты сражаешься не один, мой Крылатый Страж. Твоя Земля — это и наш дом. Начнем."</span></div>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Легионы Света хлынули в Разлом, чтобы сразиться с Хаосом, положив начало **Великой Войне за Смертный Мир**. Азраил, Элиандра и Нефилимы сражались рядом с ними, впервые почувствовав себя частью единого, пусть и сложного, Союза Небес и Земли.</p>
+        </div>
+
+        <div class="chapter" id="ch34">
+            <div class="chapter-header">
+                <div><h2>Глава XXXIV: Слияние Миров</h2><div class="subtitle">Великая Война и Последний Расчет</div></div>
+                <button class="voice-btn" onclick="startReading('ch34', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Легионы Света под предводительством Михаила и Азраила сражались против Хаоса. Это была битва не на жизнь, а на само существование. Азраил, теперь полноценный Ангел с крыльями, возглавил авангард, используя свою возрожденную силу для защиты очага своей семьи. Элиандра и Нефилимы работали как единый механизм, используя Землю и Сумеречный Баланс, чтобы сдерживать Хаос там, где свет Небес был неэффективен.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line michael readable" data-voice="michael"><span class="speaker">Михаил (сражаясь рядом с сыном)</span><span class="speech">"Твоя сила, сын, теперь острее, потому что имеет цель! Твоя Земля — это твой якорь. Используй ее, чтобы закрыть Разлом!"</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Я не могу закрыть Разлом силой, Отец! Он — часть самой ткани. Только чистая Жизнь может его связать!"</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (обращаясь к детям)</span><span class="speech">"Каэль! Лилит! Направляйте вашу Сумеречную Волну в трещину! Дайте Матери (Марии) основу для исцеления!"</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль и Лилит (в унисон, их тела сияют)</span><span class="speech">"Мы — баланс! Мы свяжем ее!"</span></div>
+                <p class="text-block readable" data-voice="narrator">Михаил, увидев, что силы Азраила и детей не хватает, отдал часть своей архистратигской благодати Марии. Богиня Жизни использовала эту чистую, неразбавленную силу, чтобы запечатать Разлом, не уничтожая, а стабилизируя его. Хаос был отброшен, но цена была огромной: Михаил надолго ослабел, а Земля была исцелена благодаря совместной жертве.</p>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch35">
+            <div class="chapter-header">
+                <div><h2>Глава XXXV: Новый Круг Жизни</h2><div class="subtitle">18 Лет Спустя: Семья и Наследники</div></div>
+                <button class="voice-btn" onclick="startReading('ch35', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Прошло **восемнадцать лет**. Великая Война стала лишь легендой, а Запретный Лес вновь расцвел, став истинным домом. Каэль и Лилит достигли совершеннолетия, став полноценными Стражами Земли: 18-летние, мощные, с абсолютным контролем над своими силами. Их гармония была совершенной. Элиандра и Азраил, свободные от постоянной угрозы, подарили миру еще троих детей, которые символизировали три аспекта их союза: **Серафим** (10 лет), **Дарья** (8 лет) и **Илия** (5 лет).</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра (наблюдая за детьми)</span><span class="speech">"Смотри, Азраил. Каэль и Лилит. Им восемнадцать, и они уже сильнее, чем ты когда-либо был до своего падения. Они готовы."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (его крылья расслаблены, голос спокоен)</span><span class="speech">"Они не просто сильны. Они — идеальный мост. Каэль — наша связь с Небесами, Лилит — наш корень в Земле. И посмотри на Серафима, Дарью и Илью... Наша вечность заполнена жизнью."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Каэль (обращаясь к младшим)</span><span class="speech">"Дарья, не используй ярость Земли, чтобы победить. Используй ее, чтобы защитить Илью. Сила без контроля — это Хаос."</span></div>
+                <div class="dialogue-line litkael readable" data-voice="litkael"><span class="speaker">Лилит</span><span class="speech">"Мы — их первое и последнее правило, мама. Мы научим их тому, чему научили нас: любить то, что защищаешь."</span></div>
+            </div>
+        </div>
+
+        <div class="chapter" id="ch36">
+            <div class="chapter-header">
+                <div><h2>Глава XXXVI: Вечный Пакт</h2><div class="subtitle">Триумф Любви и Новый Страж</div></div>
+                <button class="voice-btn" onclick="startReading('ch36', this)">▶ Слушать</button>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Вечером, когда младшие дети спали, а Каэль и Лилит отправились патрулировать границы, Азраил и Элиандра стояли у окна. Щит Михаила все еще охранял их, но теперь он казался ненужным. Их победа была не в том, что они изгнали врагов, а в том, что они создали **пять** новых жизней, которые унаследовали их вечный союз. Азраил положил голову на плечо Элиандры, а его огромные золотые крылья мягко обвили их обоих.</p>
+            <div class="dialogue-section">
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Мы победили, Ангел. Не мечом, а колыбельной. Ты — Крылатый Страж, и твоя Земля в безопасности."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил</span><span class="speech">"Моя Земля — это ты и наши дети. Я отказался от вечности ради тебя, но ты подарила мне нечто большее. Ты подарила мне **бесконечность**."</span></div>
+                <div class="dialogue-line eliandra readable" data-voice="eliandra"><span class="speaker">Элиандра</span><span class="speech">"Илия только что проснулся. Он плачет. Иди к своему младшему сыну, Страж. У него в глазах — твоя старая тоска, и только ты можешь ее унять."</span></div>
+                <div class="dialogue-line azrael readable" data-voice="azrael"><span class="speaker">Азраил (целуя ее)</span><span class="speech">"Я не просто Страж. Я — **Отец**. Это мой самый важный титул."</span></div>
+            </div>
+            <p class="text-block readable" data-voice="narrator">Ангел, чьи крылья когда-то были опалены пламенем Небесного Закона, тихо пошел к колыбели, чтобы убаюкать своего младшего сына. Это был их вечный пакт: Бог и Богиня дали им силу, но лишь их Любовь дала им мир. В конце концов, проклятие падения оказалось величайшим благословением. **Союз Небес и Земли** был не просто заключен — он был рожден.</p>
         </div>
 
     </div>
 
     <footer>
-        <p>2025 © Союз Небес и Земли. Интерактивная сага.</p>
+        <p>2025 © Союз Небес и Земли. Полная Сага.</p>
     </footer>
 
     <script>
@@ -247,32 +579,16 @@
         let readingQueue = [];
         let currentBtn = null;
         const synthesis = window.speechSynthesis;
-        let voices = synthesis.getVoices(); // Попытка получить голоса сразу
+        let voices = synthesis.getVoices(); 
 
-        // Обновляем список голосов, когда он меняется
         if (synthesis.onvoiceschanged !== undefined) {
-            synthesis.onvoiceschanged = () => {
-                voices = synthesis.getVoices();
-                console.log("Голоса обновлены:", voices.length);
-            };
+            synthesis.onvoiceschanged = () => { voices = synthesis.getVoices(); };
         }
 
         function startReading(chapterId, btn) {
-            if (!synthesis) {
-                alert("Ошибка: Ваш браузер не поддерживает синтез речи.");
-                return;
-            }
-            
-            // На мобильных устройствах иногда нужно получать голоса именно в момент клика
-            if (voices.length === 0) {
-                 voices = synthesis.getVoices();
-            }
-
-            // Если голосов все еще нет, выводим ошибку
-            if (voices.length === 0) {
-                 alert("Озвучка недоступна. Убедитесь, что в настройках телефона/планшета установлен русский голосовой пакет.");
-                 return;
-            }
+            if (!synthesis) { alert("Браузер не поддерживает озвучку."); return; }
+            if (voices.length === 0) voices = synthesis.getVoices();
+            if (voices.length === 0) { alert("Голоса загружаются или отсутствуют. Проверьте настройки."); return; }
 
             if (isReading) {
                 stopReading();
@@ -281,42 +597,32 @@
 
             currentBtn = btn;
             isReading = true;
-            btn.innerHTML = "⏹ Остановить";
+            btn.innerHTML = "⏹ Стоп";
             btn.classList.add('active');
 
             const chapter = document.getElementById(chapterId);
             readingQueue = Array.from(chapter.querySelectorAll('.readable'));
-
             readNext();
         }
 
         function readNext() {
-            if (!isReading || readingQueue.length === 0) {
-                stopReading();
-                return;
-            }
+            if (!isReading || readingQueue.length === 0) { stopReading(); return; }
 
             const element = readingQueue.shift();
             const textToRead = element.querySelector('.speech') ? element.querySelector('.speech').innerText : element.innerText;
             const role = element.dataset.voice;
 
-            // Визуальная подсветка и скролл
             document.querySelectorAll('.active-reading').forEach(el => el.classList.remove('active-reading'));
             element.classList.add('active-reading');
             element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // Создание речи
             const utterance = new SpeechSynthesisUtterance(textToRead);
             utterance.lang = 'ru-RU';
             applyVoicePersona(utterance, role);
 
             utterance.onend = () => { if (isReading) readNext(); };
-            utterance.onerror = (e) => { 
-                console.error("❌ Ошибка воспроизведения. Мобильное устройство заблокировало звук.", e); 
-                stopReading(); 
-            };
+            utterance.onerror = () => stopReading();
 
-            // Вызов speak() должен быть максимально прямым (как сейчас)
             synthesis.speak(utterance);
         }
 
@@ -324,55 +630,50 @@
             synthesis.cancel();
             isReading = false;
             readingQueue = [];
-            
-            document.querySelectorAll('.voice-btn').forEach(b => {
-                b.innerHTML = "▶ Слушать главу";
-                b.classList.remove('active');
-            });
+            document.querySelectorAll('.voice-btn').forEach(b => { b.innerHTML = "▶ Слушать"; b.classList.remove('active'); });
             document.querySelectorAll('.active-reading').forEach(el => el.classList.remove('active-reading'));
             currentBtn = null;
         }
 
         function applyVoicePersona(utterance, role) {
             const ruVoices = voices.filter(v => v.lang.includes('ru'));
-            
-            if (ruVoices.length === 0) return; // Нет русских голосов, используем настройки по умолчанию (если браузер позволит)
+            if (ruVoices.length === 0) return;
 
-            // Выбор голоса и настройка тональности
-            // Мобильные голоса часто имеют другие названия, поэтому полагаемся на фильтры lang/name
-            const femaleVoice = ruVoices.find(v => v.name.includes('Irina') || v.name.includes('Milena') || v.gender === 'female');
-            const maleVoice = ruVoices.find(v => v.name.includes('Pavel') || v.name.includes('Yuri') || v.gender === 'male');
-            const baseVoice = maleVoice || ruVoices[0]; // Берем первый русский как базовый
+            const female = ruVoices.find(v => v.name.includes('Irina') || v.name.includes('Milena') || v.gender === 'female');
+            const male = ruVoices.find(v => v.name.includes('Pavel') || v.name.includes('Yuri') || v.gender === 'male');
+            const base = male || ruVoices[0];
 
-            if (baseVoice) utterance.voice = baseVoice;
+            utterance.voice = base;
 
             switch(role) {
-                case 'narrator': 
-                    utterance.pitch = 1.0; 
-                    utterance.rate = 1.0;  
+                case 'azrael': utterance.pitch = 0.6; utterance.rate = 0.9; break;
+                case 'eliandra': 
+                    if(female) { utterance.voice = female; utterance.pitch = 1.0; } 
+                    else { utterance.pitch = 1.4; } 
+                    utterance.rate = 1.05; break;
+                case 'uriel':
+                case 'razeel': utterance.pitch = 1.0; utterance.rate = 1.25; break;
+                case 'litkael': utterance.pitch = 1.1; utterance.rate = 1.1; break;
+                
+                // ВЫСШИЕ СИЛЫ
+                case 'michael': utterance.pitch = 0.4; utterance.rate = 0.9; break;
+                case 'maria': 
+                    if (female) utterance.voice = female;
+                    else utterance.pitch = 1.6; 
+                    utterance.rate = 0.85; 
+                    break;
+                
+                // НОВЫЕ ВРАГИ
+                case 'warlord': // Владыка Варрус: Громкий, уверенный голос
+                    utterance.pitch = 0.8; 
+                    utterance.rate = 1.0;
+                    break;
+                case 'demon': // Демон Малакар: Низкий, искаженный, шипящий
+                    utterance.pitch = 0.5; 
+                    utterance.rate = 0.8;
                     break;
 
-                case 'azrael': // Мужской 2 (Бас)
-                    if (maleVoice) utterance.voice = maleVoice;
-                    utterance.pitch = 0.6; 
-                    utterance.rate = 0.9;  
-                    break;
-
-                case 'eliandra': // Женский 1
-                    if (femaleVoice) {
-                        utterance.voice = femaleVoice;
-                        utterance.pitch = 1.0;
-                    } else {
-                        utterance.pitch = 1.4; // Имитация
-                    }
-                    utterance.rate = 1.05;
-                    break;
-
-                case 'uriel': // Мужской 3 (Холодный)
-                    if (maleVoice) utterance.voice = maleVoice;
-                    utterance.pitch = 1.0; 
-                    utterance.rate = 1.25; 
-                    break;
+                default: utterance.pitch = 1.0; utterance.rate = 1.0;
             }
         }
     </script>
